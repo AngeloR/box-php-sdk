@@ -237,21 +237,33 @@ class Box_Rest_Client {
 			return $box_rest_client_auth->store($this->auth_token);
 		}
 		else {
-			$res = $this->get('get_ticket',array('api_key' => $this->api_key));
-			if($res['status'] === 'get_ticket_ok') {
-				$this->ticket = $res['ticket'];
-				
-				if($this->MOBILE) {
-					header('location: https://m.box.net/api/1.0/auth/'.$this->ticket);
-				}
-				else {
-					header('location: https://www.box.net/api/1.0/auth/'.$this->ticket);
-				}
-				
+			$this->ticket = $this->get_auth_ticket();
+			
+			if($this->MOBILE) {
+				header('location: https://m.box.net/api/1.0/auth/'.$this->ticket);
 			}
 			else {
-				throw new Box_Rest_Client_Exception($res['status']);
+				header('location: https://www.box.net/api/1.0/auth/'.$this->ticket);
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * Lets you manage the auth ticket process yourself if you want. I'm not sure 
+	 * when you'd need this, but my use-cases for Box.net are pretty straight 
+	 * forward. It's here if you want.
+	 * 
+	 * @return string The auth ticket
+	 * @throws Box_Rest_Client_Exception
+	 */
+	public function get_auth_ticket() {
+		$res = $this->get('get_ticket', array('api_key' => $this->api_key)); 
+		if($res['status'] === 'get_ticket_ok') {
+			return $res['ticket'];
+		}
+		else {
+			throw new Box_Rest_Client_Exception($res['status']);
 		}
 	}
 	
