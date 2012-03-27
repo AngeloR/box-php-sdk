@@ -7,7 +7,7 @@ $box_net = new Box_Rest_Client($api_key);
 
 
 if(!array_key_exists('auth',$_SESSION) || empty($_SESSION['auth'])) {
-	$_SESSION['auth'] = $box_net->authenticate();
+	$_SESSION['auth'] = $box_net->get_auth_ticket();
 }
 else {
 	$box_net->auth_token = $_SESSION['auth'];
