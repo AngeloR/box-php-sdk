@@ -70,4 +70,4 @@ the files and will eventually mean that we can add individual features to it.
 By default it only does a first level tree listing, but this can be changed by 
 modifying the 2nd params argument. 
 
-	$box_rest_client->folder(0, array('params' => 'nozip','simple')); 
+	$box_rest_client->folder(0, array('params' => array('nozip','simple'))); 
